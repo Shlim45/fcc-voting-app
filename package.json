@@ -1,0 +1,27 @@
+{
+  "name": "voting-app",
+  "version": "1.0.0",
+  "description": "FCC's voting app",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Shlim45/fcc-voting-app.git"
+  },
+  "author": "Shlim",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Shlim45/fcc-voting-app/issues"
+  },
+  "homepage": "https://github.com/Shlim45/fcc-voting-app#readme",
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "ejs": "^2.5.7",
+    "express": "^4.16.2",
+    "express-session": "^1.15.6",
+    "method-override": "^2.3.10"
+  }
+}
