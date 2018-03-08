@@ -1,0 +1,16 @@
+#delete-poll {
+    display: inline;
+}
+
+#delete-comment {
+    display: inline;
+}
+
+.centered {
+    text-align: center;
+}
+
+.narrow-form {
+    width: 40%;
+    margin: 25px auto;
+}
