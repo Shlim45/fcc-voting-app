@@ -20,7 +20,7 @@
             </div>
         </form>
         <p>
-            <em>Submitted By: <%= poll.author.username %></em>
+            <em>Submitted By: <a href="/profile/<%= poll.author.id %>"><%= poll.author.username %></a></em>
         </p>
         <% if(currentUser && (poll.author.id.equals(currentUser._id) || currentUser.isAdmin)) { %>
             <a class="btn btn-warning" href="/polls/<%= poll._id %>/edit">Edit</a>

@@ -53,4 +53,23 @@ router.get('/logout', function(req, res) {
     res.redirect('/');
 });
 
+// PROFILE ROUTE (keep here?)
+router.get('/profile/:id', function(req, res) {
+    const { id } = req.params;
+    User.findOne({ _id: id }, function(err, user) {
+        if (err || !user) {
+            req.flash('error', 'User not found.');
+            return res.redirect('back');
+        }
+        require('../models/poll').find({ "author.id": id }, function(err, polls) {
+            if (err) {
+                req.flash('error', err.message);
+                return res.redirect('back');
+            }
+            
+            res.render('profile', { polls, user, page: 'profile' });
+        });
+    });
+});
+
 module.exports = router;

@@ -8,7 +8,6 @@ const app = express(),
       methodOverride = require("method-override");
       
 const User = require('./models/user');
-const Poll = require('./models/poll');
 
 require('dotenv').load();
 
@@ -47,24 +46,6 @@ app.use(function(req, res, next) {
 
 app.use('/', indexRoutes);
 app.use('/polls', pollRoutes);
-
-app.get('/profile/:id', function(req, res) {
-    const { id } = req.params;
-    User.findOne({ _id: id }, function(err, user) {
-        if (err || !user) {
-            req.flash('error', 'User not found.');
-            return res.redirect('back');
-        }
-        Poll.find({ "author.id": id }, function(err, polls) {
-            if (err) {
-                req.flash('error', err.message);
-                return res.redirect('back');
-            }
-            
-            res.render('profile', { polls, user, page: 'profile' });
-        });
-    });
-});
 
 app.listen(PORT, process.env.IP, function() {
     console.log(`Voting App server started on port ${PORT}`);

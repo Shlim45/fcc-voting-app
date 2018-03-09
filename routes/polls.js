@@ -56,7 +56,7 @@ router.get('/:id', function(req, res) {
 router.post('/:id', function(req, res) {
     const { option } = req.body; // string of optionA/optionB
     const votePath = `votes.${option}`;
-
+    // increase the vote for that option by 1
     Poll.findByIdAndUpdate(req.params.id, { $inc: { [votePath]: 1 } }, {new: true}, function(err, updatedPoll) {
         if (err || !updatedPoll) {
             req.flash('error', err.message);
@@ -65,7 +65,6 @@ router.post('/:id', function(req, res) {
         req.flash('success', 'Voting successful.');
         res.redirect('/polls/' + req.params.id);
     })
-        // update the vote count
 });
 
 // EDIT POLL
