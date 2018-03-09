@@ -1,3 +1,13 @@
+html {
+    box-sizing: border-box;
+}
+
+*,
+*:before,
+*:after {
+    box-sizing: inherit;
+}
+
 #delete-poll {
     display: inline;
 }
@@ -27,4 +37,45 @@
 
 .poll-heading {
     color: rgba(255, 255, 255, 0.9);
+}
+
+.profile {
+    background-color: #222;
+    border-radius: 5px;
+    padding: 25px;
+    letter-spacing: 0.25px;
+    box-shadow: 2px 3px 7px #333;
+}
+
+.profile-heading {
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.profile-polls {
+    background-color: white;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.poll-thumbnail {
+    width: 30%;
+    min-width: 300px;
+    border: 1px solid #DDD;
+    border-radius: 5px;
+    margin: 10px;
+    padding: 10px;
+}
+
+.option-buttons {
+}
+
+.option-buttons > .btn {
+    margin: 10px;
+}
+
+@media (max-width: 600px) {
+    .option-buttons {
+        text-align: center;
+    }
 }

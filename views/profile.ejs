@@ -1,22 +1,24 @@
 <% include partials/header %>
     
-    <div class="row">
-        <div class="col-lg-12">
-            <h3><%= user.username %>'s Profile</h3>
-        </div>
-    </div>
-    
-    <div class="row text-center" style="display: flex; flex-wrap: wrap;">
-    
-        <% polls.forEach(function(poll) { %>
-            <div class="col-md-3 col-sm-6">
-                <h3><%= poll.name %></h3>
-                <p>
-                    <a href="/polls/<%= poll._id %>" class="btn btn-primary">Vote!</a>
-                </p>
-                     
+    <section class="profile">
+        <div class="row">
+            <div class="col-lg-12">
+                <h3 class="profile-heading"><%= user.username %>'s Profile</h3>
             </div>
-        <% }); %>
-    </div>
+        </div>
+        
+        <div class="row text-center profile-polls" style="display: flex; flex-wrap: wrap;">
+        
+            <% polls.forEach(function(poll) { %>
+                <div class="poll-thumbnail">  <!-- col-sm-6 col-md-3 -->
+                    <h4><%= poll.name %></h4>
+                    <p>
+                        <a href="/polls/<%= poll._id %>" class="btn btn-primary">View</a>
+                    </p>
+                         
+                </div>
+            <% }); %>
+        </div>
+    </section>
 
 <% include partials/footer %>
