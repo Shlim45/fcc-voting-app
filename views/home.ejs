@@ -8,7 +8,9 @@
                 <a class="btn btn-success btn-lg" href="/polls/new">Add New Poll</a>
                 <a class="btn btn-primary btn-lg" href="/polls/">View Current Polls</a>
                 <% if (currentUser) { %>
-                    <a class="btn btn-info btn-lg" href="/profile/<%= currentUser._id %>">View Your Polls</a>
+                    <span class="pull-right">
+                        <a class="btn btn-info btn-lg" href="/profile/<%= currentUser._id %>">View Your Polls</a>
+                    </span>
                 <% } %>
             </p>
         </div>
