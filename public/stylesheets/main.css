@@ -14,3 +14,17 @@
     width: 40%;
     margin: 25px auto;
 }
+
+.poll-results {
+    width: 60%;
+    margin: 5vh auto;
+    border-radius: 5px;
+    padding: 25px;
+    background-color: #222;
+    letter-spacing: 0.5px;
+    box-shadow: 2px 3px 7px #333;
+}
+
+.poll-heading {
+    color: rgba(255, 255, 255, 0.9);
+}

@@ -28,11 +28,18 @@
                 <button class="btn btn-danger">Delete</button>
             </form>
         <% } %>
-        <div>
-            <h4>Current results:</h4>
-            <p><em><%= poll.optionA %></em>: <strong><%= poll.votes.optionA %></strong></p>
-            <p><em><%= poll.optionB %></em>: <strong><%= poll.votes.optionB %></strong></p>
-        </div>
+    </div>
+    <div class="poll-results">
+            <h4 class="poll-heading">Current results:</h4>
+            <ul class="list-group">
+              <li class="list-group-item">
+                <em><%= poll.optionA %></em> <span class="badge"><%= poll.votes.optionA %></span>
+              </li>
+              <li class="list-group-item">
+                <em><%= poll.optionB %></em> <span class="badge"><%= poll.votes.optionB %></span>
+              </li>
+            </ul>
+            
     </div>
 </div>
 
