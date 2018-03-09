@@ -1,0 +1,30 @@
+<% include ../partials/header %>
+
+<div class="row">
+    <h1 class="centered">Create a New Poll</h1>
+    <div class="narrow-form">
+        <form action="/polls" method="POST">
+            <div class="form-group">
+                <label for="name">Name your poll.</label>
+                <input class="form-control" type="text" name="name" id="name" placeholder="Which brand?" required />
+            </div>
+            <hr>
+            <div class="form-group">
+                <label for="optionA">Option A</label>
+                <input class="form-control" type="text" name="optionA" id="optionA" placeholder="coke" required />
+            </div>
+            <div class="form-group">
+                <label for="optionB">Option B</label>
+                <input class="form-control" type="text" name="optionB" id="optionB" placeholder="pepsi" required />
+            </div>
+            <div class="form-group">
+                <button class="btn btn-lg btn-primary btn-block">Submit</button>
+            </div>
+        </form>
+        <a href="/polls">Go Back</a>
+    </div>
+    
+</div>
+
+
+<% include ../partials/footer %>

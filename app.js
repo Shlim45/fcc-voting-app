@@ -12,6 +12,7 @@ const User = require('./models/user');
 require('dotenv').load();
 
 const indexRoutes = require('./routes/index');
+const pollRoutes = require('./routes/polls');
 
 const PORT = process.env.PORT || 8080;
 
@@ -44,6 +45,7 @@ app.use(function(req, res, next) {
 });
 
 app.use('/', indexRoutes);
+app.use('/polls', pollRoutes);
 
 app.listen(PORT, process.env.IP, function() {
     console.log(`Voting App server started on port ${PORT}`);
