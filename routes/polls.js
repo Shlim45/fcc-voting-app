@@ -55,10 +55,8 @@ router.get('/:id', function(req, res) {
 // VOTE
 router.post('/:id', function(req, res) {
     const { option } = req.body; // string of optionA/optionB
-    
-    // find the poll in database    { $inc: { quantity: -2, "metrics.orders": 1 } }
     const votePath = `votes.${option}`;
-    console.log({votePath});
+
     Poll.findByIdAndUpdate(req.params.id, { $inc: { [votePath]: 1 } }, {new: true}, function(err, updatedPoll) {
         if (err || !updatedPoll) {
             req.flash('error', err.message);
@@ -66,9 +64,25 @@ router.post('/:id', function(req, res) {
         }
         req.flash('success', 'Voting successful.');
         res.redirect('/polls/' + req.params.id);
-        console.log('updated:\n', updatedPoll);
     })
         // update the vote count
 });
+
+// EDIT POLL
+
+// UPDATE POLL
+
+// DESTROY POLL
+router.delete('/:id', middleware.checkPollOwnership, function(req, res) {
+    Poll.findByIdAndRemove(req.params.id, function(err, deletedPoll) {
+        if (err || !deletedPoll) {
+            req.flash('error', 'Poll not found.');
+            res.redirect('back');
+        } else {
+            req.flash('success', 'Poll deleted successfully.');
+            res.redirect('/polls');
+        }
+    })
+})
 
 module.exports = router;
