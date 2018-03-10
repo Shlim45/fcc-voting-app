@@ -3,6 +3,7 @@
 
 <div class="row">
     <div class="narrow-form">
+        <!-- VOTING FORM -->
         <form action="/polls/<%= poll._id %>" method="POST">
             <div class="form-group">
                 <h3><%= poll.name %></h3>
@@ -12,40 +13,145 @@
                 <% poll.options.forEach((option, index) => { %>
                     <% const id = `option${index}`; %>
                     <div class="form-group">
-                        <input type="radio" name="option" id="<%= id %>" value="<%= id %>">
+                        <input type="radio" name="option" id="<%= id %>" value="<%= index %>">
                         <label for="<%= id %>"><%= option %></label>
+                        <input type="hidden" name="choices" value="<%=option%>">
                     </div>
                 <% }); %>
                 
-            </div>
+            </div> 
             <div class="form-group">
                 <button class="btn btn-sm btn-success">Vote!</button>
             </div>
         </form>
+        <!-- -->
         <p>
             <em>Submitted By: <a href="/profile/<%= poll.author.id %>"><%= poll.author.username %></a></em>
         </p>
+        <!-- EDIT / DELETE -->
         <% if(currentUser && (poll.author.id.equals(currentUser._id) || currentUser.isAdmin)) { %>
             <a class="btn btn-warning" href="/polls/<%= poll._id %>/edit">Edit</a>
             <form id="delete-poll" action="/polls/<%= poll._id %>?_method=DELETE" method="POST">
                 <button class="btn btn-danger">Delete</button>
             </form>
         <% } %>
+        <!-- -->
     </div>
     <div class="poll-results">
-            <h4 class="poll-heading">Current results:</h4>
-            <ul class="list-group">
-                
-                <% poll.options.forEach((option, index) => { %>
-                    <% const id = `option${index}`; %>
-                    <li class="list-group-item">
-                        <em><%= option %></em> <span class="badge"><%= poll.votes[index] %></span>
-                    </li>
-                <% }); %>
-                
-            </ul>
+        <h4 class="poll-heading">Current results:</h4>
+        <!-- RESULTS, LIST ON LEFT -->
+        <div class="poll-data">
+            <div class="result-list">
+                <ul class="list-group">
+                    
+                    <% poll.options.forEach((option, index) => { %>
+                        <% const id = `option${index}`; %>
+                        <li class="list-group-item">
+                            <em><%= option %></em> <span class="badge"><%= poll.votes[index] %></span>
+                            <input type="hidden" class="hidden-vote" id="option<%=index%>" name="option<%=index%>" data-votes="<%=poll.votes[index]%>" value="<%=option%>" />
+                        </li>
+                    <% }); %>
+                    
+                </ul>
+            </div>
             
+            <!-- RESULTS, CHART ON RIGHT -->
+            <div class="result-chart">
+                <canvas id="myChart" width="300" height="300"></canvas>
+            </div>
+        </div>
     </div>
+    
 </div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.min.js"></script>
+<script>
+    const ctx = document.getElementById("myChart").getContext("2d");
+    const options = Array.from( document.querySelectorAll('input[name="choices"]') )
+         .map(option => option.length <= 100 ? option.value : option.value.substring(0, 100));
+         
+    const votes = Array.from( document.querySelectorAll('.hidden-vote'))
+        .map(vote => vote.dataset.votes);
+    
+    function chartFactory( ctx, stats={ labels: ['None'], data: [0]}, type='polarArea' ) {
+        const { labels, data } = stats;
+        const backgrounds = [
+            'rgba(255, 99, 132, 0.8)',
+            'rgba(54, 162, 235, 0.8)',
+            'rgba(255, 206, 86, 0.8)',
+            'rgba(75, 192, 192, 0.8)',
+            'rgba(153, 102, 255, 0.8)',
+            'rgba(255, 159, 64, 0.8)',
+            'rgba(255, 99, 132, 0.8)',
+            'rgba(54, 162, 235, 0.8)',
+            'rgba(255, 206, 86, 0.8)',
+            'rgba(75, 192, 192, 0.8)',
+            'rgba(153, 102, 255, 0.8)',
+            'rgba(255, 159, 64, 0.8)',
+        ];
+        
+        const borders = [
+            'rgba(255,99,132,1)',
+            'rgba(54, 162, 235, 1)',
+            'rgba(255, 206, 86, 1)',
+            'rgba(75, 192, 192, 1)',
+            'rgba(153, 102, 255, 1)',
+            'rgba(255, 159, 64, 1)',
+            'rgba(255,99,132,1)',
+            'rgba(54, 162, 235, 1)',
+            'rgba(255, 206, 86, 1)',
+            'rgba(75, 192, 192, 1)',
+            'rgba(153, 102, 255, 1)',
+            'rgba(255, 159, 64, 1)',
+        ];
+        
+        // Random repeats colors too often, resulting in a graph of one color.
+        // can fix with something like let lastColor;
+        // but, would still be a problem if options 1 and 3 are same color &
+        // only ones voted on, as graph only shows slices with votes.
+        
+        // const randomNumbers     = data.map((d,i,array) => Math.floor(
+        //     Math.random() * Math.min(backgrounds.length, borders.length)
+        // ));
+        
+        // const randomBackgrounds = randomNumbers.map(num => backgrounds[num]);
+        // const randomBorders     = randomNumbers.map(num => borders[num]);
+        
+        const steadyBackgrounds = data.map((data, index) => backgrounds[index]);
+        const steadyBorders     = data.map((data, index) => borders[index]);
+        
+        return new Chart(ctx, {
+            type,
+            data: {
+                labels,
+                datasets: [{
+                    label: 'Votes',
+                    data,
+                    backgroundColor: steadyBackgrounds,
+                    borderColor: steadyBorders,
+                    borderWidth: 1
+                }]
+            },
+             options: {
+                layout: {
+                    padding: {
+                        left: 0,
+                        right: 0,
+                        top: 0,
+                        bottom: 0,
+                    },
+                    margin: {
+                        left: 0,
+                        right: 0,
+                        top: 0,
+                        bottom: 0,
+                    },
+                }
+            }
+        });
+    }
+    
+    const myChart = chartFactory( ctx, { labels: options, data: votes } );
+</script>
 
 <% include ../partials/footer %>

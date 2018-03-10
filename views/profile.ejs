@@ -10,12 +10,11 @@
         <div class="row text-center profile-polls" style="display: flex; flex-wrap: wrap;">
         
             <% polls.forEach(function(poll) { %>
-                <div class="poll-thumbnail">  <!-- col-sm-6 col-md-3 -->
+                <div class="poll-thumbnail">
                     <h4><%= poll.name %></h4>
                     <p>
                         <a href="/polls/<%= poll._id %>" class="btn btn-primary">View</a>
                     </p>
-                         
                 </div>
             <% }); %>
         </div>

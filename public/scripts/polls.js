@@ -1,22 +1,24 @@
 const form = document.querySelector('form');
 const options   = form.querySelector('.options');
+const editOptions   = form.querySelector('.edit-options');
 const addButton = form.querySelector('.add-option');
 const opts = ['', ''];
 
 function generateOptions(options = []) {
-    console.log('generating...');
     return options.map((option, index) => {
         const optionName = `option${index}`;
         return `
             <div class="option">
                 <label for=${optionName}>Option ${index+1}</label>
-                <input class="form-control" type="text" name="options" id=${optionName} placeholder="option ${index+1}" />
+                <input class="form-control" type="text" maxlength="30" name="options" id=${optionName} placeholder="option ${index+1}" />
             </div>
         `;
         }).join('');
 }
 
-options.innerHTML = generateOptions(opts);
+if (options) {
+    options.innerHTML = generateOptions(opts);
+}
 
 function newOption(opts) {
     const index = opts.length;
@@ -27,7 +29,7 @@ function newOption(opts) {
     newOption.innerHTML = `
         <div class="option">
             <label for=${optionName}>Option ${index+1}</label>
-            <input class="form-control" type="text" name="options" id=${optionName} placeholder="option ${index+1}" />
+            <input class="form-control" type="text" maxlength="30" name="options" id=${optionName} placeholder="option ${index+1}" />
         </div>
     `;
     return newOption;
@@ -38,6 +40,11 @@ function addOption(newOption, opts, output) {
     return opts.push('');
 }
 
-addButton.addEventListener('click', () => {
-    addOption(newOption(opts), opts, options);
+addButton.addEventListener('click', (e) => {
+    const output = options || editOptions;
+    let optionArray = opts;
+    if (editOptions) {
+        optionArray = Array.from(editOptions.children);
+    }
+    addOption(newOption(optionArray), optionArray, output);
 });

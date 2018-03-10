@@ -7,14 +7,25 @@ const PollSchema = new mongoose.Schema({
     author: {
         id: {
             type: mongoose.Schema.Types.ObjectId,
-            ref: "User"
+            ref: "User",
         },
         username: String
     },
-    votes:  [{
-                type: Number,
-                default: 0,
-            }],
+    votes:  [
+        {
+            type: Number,
+            default: 0,
+        },
+    ],
+    // store the voters, will use this to prevent double voting
+    voters: [
+        {
+            id: {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: "User",
+            }
+        },
+    ],
 });
 
 module.exports = mongoose.model('Poll', PollSchema);

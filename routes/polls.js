@@ -52,11 +52,11 @@ router.get('/:id', function(req, res) {
     });
 });
 
-// VOTE
-router.post('/:id', function(req, res) {
-    const { option } = req.body; // string of option#
-    const votePath = `votes.${ option.replace('option', '') }`;
-    console.log(votePath);
+// VOTE (REQUIRING LOGIN, CAN PREVENT DUPLICATE VOTES)
+router.post('/:id', middleware.isLoggedIn, function(req, res) {
+    const { option } = req.body; // index of option
+    const votePath = `votes.${ option }`;
+
     // increase the vote for that option by 1
     Poll.findByIdAndUpdate(req.params.id, { $inc: { [votePath]: 1 } }, {new: true}, function(err, updatedPoll) {
         if (err || !updatedPoll) {
@@ -69,8 +69,32 @@ router.post('/:id', function(req, res) {
 });
 
 // EDIT POLL
+router.get('/:id/edit', middleware.checkPollOwnership, function(req, res) {
+    Poll.findById(req.params.id).exec(function(err, foundPoll) {
+        if (err || !foundPoll) {
+            req.flash('error', 'Poll not found.');
+            res.redirect('back');
+        } else {
+            res.render('polls/edit', {poll: foundPoll});
+        }
+    });
+});
 
 // UPDATE POLL
+router.put('/:id', middleware.checkPollOwnership, function(req, res) {
+    const { options } = req.body; // array of strings
+    const votes = (typeof options === 'string') ? [0] : options.map(_ => 0); // vote slot for new options
+              
+        // find and update the poll
+        Poll.findByIdAndUpdate(req.params.id, {$push: {options, votes}}, function(err, updatedCampground) { //req.body.campground
+            if(err || !updatedCampground) {
+                    req.flash("error", err.message);
+                    return res.redirect("back");
+            }
+            req.flash("success", "Successfully updated poll.");
+            res.redirect("/polls/" + req.params.id);
+        });
+});
 
 // DESTROY POLL
 router.delete('/:id', middleware.checkPollOwnership, function(req, res) {

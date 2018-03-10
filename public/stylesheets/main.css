@@ -35,6 +35,17 @@ html {
     box-shadow: 2px 3px 7px #333;
 }
 
+.poll-data {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.poll-data > div {
+    width: 300px;
+    margin: auto;
+}
+
 .poll-heading {
     color: rgba(255, 255, 255, 0.9);
 }
@@ -83,7 +94,14 @@ html {
         flex-direction: column;
         align-items: center;
     }
+    .poll-results {
+        width: 95%;
+    }
     .option-buttons {
         text-align: center;
+    }
+    .canvas {
+        width: 300px;
+        height: 300px;
     }
 }

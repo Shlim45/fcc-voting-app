@@ -1,0 +1,49 @@
+<% include ../partials/header %>
+
+<div class="row">
+    <h1 class="centered">Edit Poll Options</h1>
+    <div class="narrow-form">
+        <form action="/polls/<%= poll._id %>?_method=PUT" method="POST">
+            <div class="form-group">
+                <label for="name">Name of poll:</label>
+                <input 
+                    class="form-control" 
+                    type="text" 
+                    name="name" id="name" 
+                    placeholder="Which brand?" 
+                    value="<%= poll.name %>" 
+                    disabled 
+                />
+            </div>
+            <hr>
+            <div class="form-group edit-options">
+                <% poll.options.forEach((option, index) => { %>
+                    <div class="option">
+                        <label for="<%= 'option'+index %>">Option <%=index+1 %></label>
+                        <input 
+                            class="form-control" 
+                            type="text" 
+                            name="options"
+                            maxlength="30"
+                            id="<%='option'+index%>" 
+                            placeholder="option <%= index+1 %>" 
+                            value="<%= option %>"
+                            disabled
+                        />
+                    </div>
+                <% }); %>
+            </div>
+            <div class="form-group">
+                <a class="btn btn-sm btn-success add-option">+</a>
+            </div>
+            <div class="form-group">
+                <button class="btn btn-lg btn-success btn-block" type="submit">Submit</button>
+            </div>
+        </form>
+        <a href="back">Cancel</a>
+    </div>
+</div>
+
+<script type="text/javascript" src="/scripts/polls.js"></script>
+
+<% include ../partials/footer %>
