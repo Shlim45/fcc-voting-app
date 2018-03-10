@@ -7,13 +7,16 @@
             <div class="form-group">
                 <h3><%= poll.name %></h3>
             </div>
-            <div class="form-group">
-                <input type="radio" name="option" id="optionA" value="optionA">
-                <label for="optionA"><%= poll.optionA %></label>
-            </div>
-            <div class="form-group">
-                <input type="radio" name="option" id="optionB" value="optionB">
-                <label for="optionB"><%= poll.optionB %></label>
+            <div class="poll-options">
+                
+                <% poll.options.forEach((option, index) => { %>
+                    <% const id = `option${index}`; %>
+                    <div class="form-group">
+                        <input type="radio" name="option" id="<%= id %>" value="<%= id %>">
+                        <label for="<%= id %>"><%= option %></label>
+                    </div>
+                <% }); %>
+                
             </div>
             <div class="form-group">
                 <button class="btn btn-sm btn-success">Vote!</button>
@@ -32,12 +35,14 @@
     <div class="poll-results">
             <h4 class="poll-heading">Current results:</h4>
             <ul class="list-group">
-              <li class="list-group-item">
-                <em><%= poll.optionA %></em> <span class="badge"><%= poll.votes.optionA %></span>
-              </li>
-              <li class="list-group-item">
-                <em><%= poll.optionB %></em> <span class="badge"><%= poll.votes.optionB %></span>
-              </li>
+                
+                <% poll.options.forEach((option, index) => { %>
+                    <% const id = `option${index}`; %>
+                    <li class="list-group-item">
+                        <em><%= option %></em> <span class="badge"><%= poll.votes[index] %></span>
+                    </li>
+                <% }); %>
+                
             </ul>
             
     </div>

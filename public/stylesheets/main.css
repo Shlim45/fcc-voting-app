@@ -67,6 +67,10 @@ html {
     padding: 10px;
 }
 
+.option {
+    margin: 10px 0;
+}
+
 .option-buttons {
 }
 
@@ -75,6 +79,10 @@ html {
 }
 
 @media (max-width: 600px) {
+    .profile-polls {
+        flex-direction: column;
+        align-items: center;
+    }
     .option-buttons {
         text-align: center;
     }

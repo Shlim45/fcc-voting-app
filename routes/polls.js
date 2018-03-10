@@ -12,18 +12,18 @@ router.get('/', function(req, res) {
             res.render('polls/index', {polls, page: "polls"});
         }
     });
-})
+});
 
 // CREATE
 router.post('/', middleware.isLoggedIn, function(req, res) {
-    
-    const { name, optionA, optionB } = req.body;
+    const { name, options } = req.body;
     const author = {
         id: req.user._id,
         username: req.user.username,
     };
+    const votes = options.map(option => 0); // initialize votes to 0
     
-    const newPoll = { name, optionA, optionB, author };
+    const newPoll = { name, options, author, votes };
     
     Poll.create(newPoll, function(err, createdPoll) {
         if (err) {
@@ -49,13 +49,14 @@ router.get('/:id', function(req, res) {
         } else {
             res.render('polls/show', {poll: foundPoll});
         }
-    })
+    });
 });
 
 // VOTE
 router.post('/:id', function(req, res) {
-    const { option } = req.body; // string of optionA/optionB
-    const votePath = `votes.${option}`;
+    const { option } = req.body; // string of option#
+    const votePath = `votes.${ option.replace('option', '') }`;
+    console.log(votePath);
     // increase the vote for that option by 1
     Poll.findByIdAndUpdate(req.params.id, { $inc: { [votePath]: 1 } }, {new: true}, function(err, updatedPoll) {
         if (err || !updatedPoll) {
@@ -64,7 +65,7 @@ router.post('/:id', function(req, res) {
         }
         req.flash('success', 'Voting successful.');
         res.redirect('/polls/' + req.params.id);
-    })
+    });
 });
 
 // EDIT POLL
@@ -81,7 +82,7 @@ router.delete('/:id', middleware.checkPollOwnership, function(req, res) {
             req.flash('success', 'Poll deleted successfully.');
             res.redirect('/polls');
         }
-    })
-})
+    });
+});
 
 module.exports = router;

@@ -2,8 +2,7 @@ const mongoose = require('mongoose');
 
 const PollSchema = new mongoose.Schema({
     name: String,
-    optionA: String,
-    optionB: String,
+    options: [String],
     createdAt: { type: Date, default: Date.now() },
     author: {
         id: {
@@ -12,16 +11,10 @@ const PollSchema = new mongoose.Schema({
         },
         username: String
     },
-    votes:  {
-                optionA: {
-                    type: Number,
-                    default: 0,
-                },
-                optionB: {
-                    type: Number,
-                    default: 0,
-                },
-            },
+    votes:  [{
+                type: Number,
+                default: 0,
+            }],
 });
 
 module.exports = mongoose.model('Poll', PollSchema);
